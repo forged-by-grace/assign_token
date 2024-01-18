@@ -54,7 +54,7 @@ pipeline {
              steps{
                  script{
                    withDockerRegistry(credentialsId: 'dockerhub', toolName: 'docker'){   
-                      sh "docker build -t ${APP_NAME} ./app"
+                      sh "docker build -t ${APP_NAME} ."
                       sh "docker tag ${APP_NAME} ${IMAGE_NAME}:latest "
                       sh "docker tag ${APP_NAME} ${IMAGE_NAME}:${IMAGE_TAG} "
                       sh "docker push ${IMAGE_NAME}:latest "
