@@ -11,19 +11,3 @@ class AssignToken(AvroBaseModel):
     device_ip: str = Field(description='Used to track the device IP address')
     token: str = Field(description='Encrypted refresh token')
     device_info: Device = Field(description='Device meta data.')
-
-
-class ReusedToken(AvroBaseModel):
-    id: str = Field(description=id_description)
-
-
-class UpdateToken(AvroBaseModel):
-    id: str = Field(description='Used to identify the account')
-    old_token: str = Field(description='Encrypted old refresh token')
-    new_token: str = Field(description='Encrypted new refresh token')
-
-
-class RevokeToken(AvroBaseModel):
-    id: str = Field(description='A string used to identify an account')
-    token: str = Field(description='A string representing the refresh token.')
-    device_ip: str = Field(description='A string representing the IP address of the current device.')

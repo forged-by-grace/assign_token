@@ -1,8 +1,8 @@
 from core.helper.consumer_helper import consume_event
 from core.utils.settings import settings
 from core.utils.init_log import logger
-from core.helper.token_helper import assign_token, invalidate_account_tokens, send_threat_notification, update_refresh_token, revoke_refresh_token
-from core.model.token_models import AssignToken, ReusedToken, RevokeToken, UpdateToken
+from core.helper.token_helper import assign_token
+from core.model.token_models import AssignToken
 
 # Processing event msg
 event_processing_msg = "Processing event"

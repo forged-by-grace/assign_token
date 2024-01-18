@@ -4,7 +4,7 @@ import asyncio
 import json
 import sys
 from core.utils.settings import settings
-
+from core.utils.init_log import logger
 
 async def get_last_committed_offsets(redis, consumer_group, topic, partitions):
     key = f"{consumer_group}_{topic}_last_committed_offsets"
@@ -22,7 +22,7 @@ async def kafka_consumer_liveness_probe(bootstrap_servers, group_id, topic, redi
     consumer_conf = {
         'bootstrap_servers': bootstrap_servers,
         'group_id': group_id,
-        'auto_offset_reset': 'earliest',  # Set according to your requirements
+        'auto_offset_reset': 'earliest', 
     }
 
     consumer = aiokafka.AIOKafkaConsumer(
@@ -39,13 +39,13 @@ async def kafka_consumer_liveness_probe(bootstrap_servers, group_id, topic, redi
         partitions = consumer.partitions_for_topic(topic)
         current_offsets = await consumer.position(partitions)
         if not partitions or not current_offsets:
-            print("Error: Unable to read current offset.")
+            logger.error("Error: Unable to read current offset.")
             sys.exit(1)
 
         # Check if we can read the committed offset
         committed_offsets = await consumer.committed_offsets(partitions)
         if not committed_offsets or None in committed_offsets.values():
-            print("Error: Unable to read committed offset.")
+            logger.error("Error: Unable to read committed offset.")
             sys.exit(1)
 
         # Get the last committed offsets
@@ -54,12 +54,12 @@ async def kafka_consumer_liveness_probe(bootstrap_servers, group_id, topic, redi
         # Fail liveness probe if committed offset hasn't changed for any partition
         for partition in partitions:
             if last_committed_offsets[str(partition)] == committed_offsets[partition]:
-                print(f"Error: Committed offset for partition {partition} has not changed since last run.")
+                logger.error(f"Error: Committed offset for partition {partition} has not changed since last run.")
                 sys.exit(1)
 
         # Pass liveness probe if current offset equals committed offset for all partitions
         if current_offsets == committed_offsets:
-            print("Liveness probe passed: Current offset equals committed offset.")
+            logger.error("Liveness probe passed: Current offset equals committed offset.")
             sys.exit(0)
 
         # Save the current committed offsets for each partition for the next run
@@ -69,7 +69,7 @@ async def kafka_consumer_liveness_probe(bootstrap_servers, group_id, topic, redi
             msg = await consumer.getone()
 
             # Process the received message as needed
-            print(f"Received message: {msg.value.decode('utf-8')}")
+            logger.info(f"Received message: {msg.value.decode('utf-8')}")
 
     except KeyboardInterrupt:
         pass
