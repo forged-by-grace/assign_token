@@ -78,10 +78,11 @@ pipeline {
                }
           }
        }
+       
        stage("Trigger CD Pipeline") {
             steps {
                 script {
-                    sh "curl -v -k --user Conano:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-52-66-44-148.ap-south-1.compute.amazonaws.com:8080/job/assign-token-cd/buildWithParameters?token=gitops-token'"
+                    sh "curl -v -k --user conano:${JENKINS_API_TOKEN} -X POST -H 'cache-control: no-cache' -H 'content-type: application/x-www-form-urlencoded' --data 'IMAGE_TAG=${IMAGE_TAG}' 'ec2-52-66-44-148.ap-south-1.compute.amazonaws.com:8080/job/assign-token-cd/buildWithParameters?token=gitops-token'"
                 }
             }
        }         
