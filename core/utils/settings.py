@@ -2,9 +2,7 @@ from pydantic_settings import BaseSettings, SettingsConfigDict
 import os
 
 
-class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=os.path.abspath('.env'), env_file_encoding='utf-8')
-    
+class Settings(BaseSettings):    
     # Event Streaming Server
     api_event_streaming_host:str
     api_event_streaming_client_id: str
