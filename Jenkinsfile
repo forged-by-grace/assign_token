@@ -6,7 +6,7 @@ pipeline {
 
     environment {
         SCANNER_HOME = tool 'sonarqube-scanner'
-        APP_NAME = "assign-token"
+        APP_NAME = "assign-token-container"
         RELEASE = "0.0.1"
         DOCKER_USER = "conano"
         DOCKER_PASS = 'dockerhub'
