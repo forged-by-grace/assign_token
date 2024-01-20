@@ -29,16 +29,22 @@ async def kafka_consumer_liveness_probe(group_id, topic):
         partitions = consumer.assignment()
         
         if len(partitions) > 1:
-            current_offsets = await consumer.position(partitions)
-            if not current_offsets:
-                logger.error("Error: Unable to read current offset.")
-                sys.exit(1)
+            for partition in partitions:                
+                if partition is None:
+                    logger.error("Error: Unable to read current offset.")
+                    sys.exit(1)
+
+                current_offsets = await consumer.position(partition)
+                if not current_offsets:
+                    logger.error("Error: Unable to read current offset.")
+                    sys.exit(1)
 
             # Check if we can read the committed offset
-            committed_offsets = await consumer.committed_offsets(partitions)
-            if not committed_offsets or None in committed_offsets.values():
-                logger.error("Error: Unable to read committed offset.")
-                sys.exit(1)
+            for partition in partitions:
+                committed_offsets = await consumer.committed(partition)
+                if not committed_offsets:
+                    logger.error("Error: Unable to read committed offset.")
+                    sys.exit(1)
 
             # Get the last committed offsets
             last_committed_offsets = await get_last_committed_offsets(redis, group_id, topic, partitions)
@@ -62,7 +68,8 @@ async def kafka_consumer_liveness_probe(group_id, topic):
 
                 # Process the received message as needed
                 logger.info(f"Received message: {msg.value.decode('utf-8')}")
-        sys.exit(0)
+        else:
+            sys.exit(0)
     except KeyboardInterrupt:
         pass
     finally:

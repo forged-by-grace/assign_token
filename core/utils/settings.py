@@ -3,7 +3,7 @@ import os
 
 
 class Settings(BaseSettings):
-    model_config = SettingsConfigDict(env_file=os.path.abspath('.env'), env_file_encoding='utf-8')
+    #model_config = SettingsConfigDict(env_file=os.path.abspath('.env'), env_file_encoding='utf-8')
     
     # Event Streaming Server
     api_event_streaming_host:str
