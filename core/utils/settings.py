@@ -13,17 +13,9 @@ class Settings(BaseSettings):
     service_name: str
 
     # Streaming topics
-    api_assign_token: str
-    api_update_account: str
-    api_invalidate_cache: str
+    api_assign_token: str    
     api_device: str
-    api_logout: str
-    api_cache: str
-    api_notification: str
-    api_invalidate_account_token: str
-    api_update_token: str
-    api_reused_refresh_token: str
-    api_revoke_refresh_token: str
+    api_cache: str    
     api_db_url: str
     api_add_device: str
     
