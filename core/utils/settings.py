@@ -16,10 +16,13 @@ class Settings(BaseSettings):
     api_assign_token: str    
     api_device: str
     api_cache: str    
-    api_db_url: str
     api_add_device: str
     
     # Cache credentials
     api_redis_host_local: str
+
+    # DB credentials
+    api_db_url: str
+
    
 settings = Settings()

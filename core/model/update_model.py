@@ -11,5 +11,6 @@ class UpdateFieldAvro(AvroBaseModel):
 
 
 class UpdateAvro(AvroBaseModel):
+   db_metadata: Dict[str, str] = Field(description='This is used to specify the name of the mongoDB database and collection.')
    db_filter: Dict[str, str] = Field(description='This is used to match the document to be updated')
    updates: List[UpdateFieldAvro] = Field(description='Update to be made')
