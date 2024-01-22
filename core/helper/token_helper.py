@@ -23,6 +23,9 @@ async def assign_token(data: AssignToken):
 
     # Create update list
     account_updates = UpdateAvro(
+        db_metadata={'provider': 'mongoDB', 
+                     'database': 'account_db', 
+                     'collection': 'accounts'},
         db_filter={'_id': data.id},
         updates=[
             token_field, 
